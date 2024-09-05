@@ -13,7 +13,8 @@ on:
         required: true
         default: 'integration/test/cra'
         type: choice
-       jobs:
+      options:
+      jobs:
         cypress-run:
     runs-on: ubuntu-22.04
     steps:
