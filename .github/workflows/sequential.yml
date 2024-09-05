@@ -13,9 +13,9 @@ on:
         required: true
         default: 'integration/test/cra'
         type: choice
-      options:
+      options: integration/shared 
       jobs:
-        cypress-run:
+      cypress-run:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
