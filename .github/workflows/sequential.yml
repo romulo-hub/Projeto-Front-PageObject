@@ -11,7 +11,7 @@ on:
       folder:
         description: 'Select the folder to run tests from'
         required: true
-        default: 'integration/test/cra'
+        default: 'integration/shared'
         type: choice
       options: integration/shared 
       jobs:
