@@ -1,27 +1,42 @@
-name: End-to-end tests
+name: Run Cypress Tests
+
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - master
   workflow_dispatch:
     inputs:
       folder:
-        description: 'Select the folder to run tests from'
+        description: 'Selecione a pasta para executar os testes'
         required: true
-        default: 'integration/test/cra'
+        default: 'Cadastro'
         type: choice
-      options: integration/shared 
-      jobs:
-      cypress-run:
-    runs-on: ubuntu-22.04
+        options:
+          - Cadastro
+          - Falha
+
+jobs:
+  cypress-tests:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [14.x]
+
     steps:
-      - name: Checkout
+      - name: Checkout the code
         uses: actions/checkout@v4
-      # Install npm dependencies, cache them correctly
-      # and run all Cypress tests
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
-        
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Cypress tests
+        run: |
+          npx cypress run --spec "cypress/integration/${{ github.event.inputs.folder }}/**/*.spec.js"
+        env:
+          CI: true
