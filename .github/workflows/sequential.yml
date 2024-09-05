@@ -1,21 +1,26 @@
-name: Testes Agibank
-
+name: End-to-end tests
 on:
   push:
+    branches:
+      - main
   pull_request:
+    branches:
+      - main
   workflow_dispatch:
-
-jobs:
-  cypress-run:
-
-    runs-on: ubuntu-18.04
-
+    inputs:
+      folder:
+        description: 'Select the folder to run tests from'
+        required: true
+        default: 'integration/test/cra'
+        type: choice
+       jobs:
+        cypress-run:
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
-
-      - name: Run ServeRest
-        run: docker run -d -p 3000:3000 paulogoncalvesbh/serverest:latest
-
+        uses: actions/checkout@v4
+      # Install npm dependencies, cache them correctly
+      # and run all Cypress tests
       - name: Cypress run
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v6
+        
